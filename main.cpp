@@ -49,7 +49,11 @@ int main(){
     cout << endl;
 
     //kahn's
-    queue.push(1); //ponto A, que tem sempre in degree zero
+    for(int i = 1; i <= N; i++){
+        if(inDeg[i] == 0){
+            queue.push(i); //colocar elemento concreto na queue
+        }
+    }
     int j = 1;
     while(!queue.empty()){
         int elem = queue.front();
