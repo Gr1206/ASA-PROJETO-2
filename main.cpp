@@ -6,9 +6,7 @@
 using namespace std;
 
 
-bool hasDL(const vector<unordered_set<int>> &mapa, int j, int a){
-    return mapa[j].find(a) != mapa[j].end();
-}
+
 int calcCusto(int M, int paths){
     return 1+paths%M;
 }
@@ -29,8 +27,8 @@ int main(){
 
     vector<vector<pair<int, int>>> camioes(M+1);
 
-    vector<vector<int>> mapa(N+1); 
-    vector<unordered_set<int>> mapings(N+1);
+    vector<vector<int>> mapa(N+1);
+    vector<vector<bool>> directL(N+1, vector<bool>(N+1, false)); 
 
     vector<int> inDeg(N+1, 0); //in degree de todos os nós 
     vector<int> outDeg(N+1, 0);
@@ -42,7 +40,7 @@ int main(){
     for(int i = 0; i < K; i++){
         cin >> v1 >> v2; 
         mapa[v1].push_back(v2);
-        mapings[v1].insert(v2);
+        directL[v1][v2] = true;
         inDeg[v2]++;
         outDeg[v1]++;
 
@@ -98,8 +96,8 @@ int main(){
     */
    
 
-    bool dl1;
-    bool dl2;
+    //bool dl1;
+    //bool dl2;
     int b = 0;
     int c = 0;
     int ver1 = 0;
@@ -109,10 +107,10 @@ int main(){
     for(int h = N-1;h>0;h--){
         if(inDeg[ordemTopologica[h]] == 0 && outDeg[ordemTopologica[h]] == 0){continue;}
         for(int i =h+1, a = h; i<=N;i++, a++){
-
+            if(inDeg[ordemTopologica[i]] == 0 && outDeg[ordemTopologica[i]] == 0){continue;}
             ver1 = ordemTopologica[h];
             ver2 = ordemTopologica[i];
-            if (hasDL(mapings, ver1, ver2)){
+            if (directL[ver1][ver2]){
                 dp[h][i]++;
             }
             for (int j = a; j>h; j--){
@@ -121,9 +119,11 @@ int main(){
                     continue;
                 }
                 ver3 = ordemTopologica[j];
-                dl1 = hasDL(mapings, ver3, ver2);
-                dl2 = hasDL(mapings, ver1, ver3);
-                if ((dl1 && dl2) || (!dl1 && dl2)){
+                //dl1 = hasDL(mapings, ver3, ver2);
+                //dl2 = hasDL(mapings, ver1, ver3);
+                //dl1 = directL[ver3][ver2];
+                
+                if (directL[ver1][ver3]){
                     dp[h][i]+=b%M;
                 }
             }
@@ -144,9 +144,16 @@ int main(){
     }
     */
     
+    
+    for(int i = m1; i <= m2; i++){
+        sort(camioes[i].begin(), camioes[i].end());
+    }
+    
+    /*
+
     for(auto &camiao : camioes){
         sort(camiao.begin(), camiao.end());
-    }
+    }*/
 
     for(int i = m1; i <= m2; i++){
         cout << 'C'<<i;
@@ -154,7 +161,7 @@ int main(){
             cout << ' ' <<  j.first <<',' << j.second;
         }
 
-        cout << endl;
+        cout << '\n';
     }
 
 
