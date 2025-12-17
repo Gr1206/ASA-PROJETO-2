@@ -104,21 +104,16 @@ int main(){
     int ver2 = 0;
     int ver3 = 0;
     int custo = 0;
-    for(int h = N-1;h>0;h--){
+    for(int h = N-1; h > 0; h--){
         if(inDeg[ordemTopologica[h]] == 0 && outDeg[ordemTopologica[h]] == 0){continue;}
-        for(int i =h+1, a = h; i<=N;i++, a++){
-            
-            if(inDeg[ordemTopologica[i]] == 0 && outDeg[ordemTopologica[i]] == 0){
-                //NÃO SEI SE ALTERA
-                continue;
-            }
-            
+        for(int i = h + 1, a = h; i<= N; i++, a++){
+            if(inDeg[ordemTopologica[i]] == 0 && outDeg[ordemTopologica[i]] == 0){continue;}
             ver1 = ordemTopologica[h];
             ver2 = ordemTopologica[i];
             if (directL[ver1][ver2]){
                 dp[h][i]++;
             }
-            for (int j = a; j>h; j--){
+            for (int j = a; j > h; j--){
                 b = dp[j][i];
                 if (b==0){
                     continue;
@@ -149,9 +144,18 @@ int main(){
     }
     */
     
-    //ordenar só os camiões pedidos
+    
     for(int i = m1; i <= m2; i++){
         sort(camioes[i].begin(), camioes[i].end());
+    }
+    
+    /*
+
+    for(auto &camiao : camioes){
+        sort(camiao.begin(), camiao.end());
+    }*/
+
+    for(int i = m1; i <= m2; i++){
         cout << 'C'<<i;
         for(auto &j : camioes[i]) {
             cout << ' ' <<  j.first <<',' << j.second;
@@ -159,8 +163,6 @@ int main(){
 
         cout << '\n';
     }
-
-
 
 
 
